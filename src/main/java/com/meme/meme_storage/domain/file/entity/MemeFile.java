@@ -1,13 +1,15 @@
 package com.meme.meme_storage.domain.file.entity;
 
+import com.meme.meme_storage.domain.BaseTimeEntity;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
-@Data
-public class File {
+@Getter
+public class MemeFile extends BaseTimeEntity {
 
     @Id @GeneratedValue
     @Column(name = "file_id")
@@ -15,17 +17,17 @@ public class File {
 
     private String fileName;
     private String fileType;
-    private String fileDownloadUri;
+    private String filePath;
     private long size;
 
-    public File(){
+    public MemeFile(){
 
     }
 
-    public File(String fileName, String fileType, String fileDownloadUri, long size) {
+    public MemeFile(String fileName, String fileType, String filePath, long size) {
         this.fileName = fileName;
         this.fileType = fileType;
-        this.fileDownloadUri = fileDownloadUri;
+        this.filePath = filePath;
         this.size = size;
     }
 }
