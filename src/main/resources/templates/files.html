@@ -28,7 +28,7 @@
 
             <tbody>
             <tr th:each="file : ${files}">
-                <td> <img th:src="@{'images/' + ${file.fileName}}" width="300" height="300"/> </td>
+                <td> <img th:src="@{'img/' + ${file.fileName}}" width="300" height="300"/> </td>
                 <td th:text="${file.fileName}"></td>
                 <td th:text="${file.fileType}"></td>
                 <td th:text="${file.createdDate}"></td>
