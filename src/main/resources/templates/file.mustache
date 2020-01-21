@@ -1,0 +1,27 @@
+
+{{>layout/header}}
+
+<h1>파일 업로드</h1>
+
+<div class="col-md-12">
+    <div class="col-md-4">
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <input class="form-control" type="file" value="파일 선택" name="file"/>
+            </div>
+
+            <div class="form-group">
+                <h4> Tags </h4>
+                Tag: <input class="form-control" type="text" name="tagName"><br>
+                Tag: <input class="form-control" type="text" name="tagName"><br>
+            </div>
+
+
+            <hr>
+            <input class="btn btn-primary" type="submit" value="업로드"/>
+        </form>
+        <a href="/" role="button" class="btn btn-secondary">취소</a>
+    </div>
+</div>
+
+{{>layout/footer}}
