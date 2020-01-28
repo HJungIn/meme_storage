@@ -2,6 +2,24 @@
 {{>layout/header}}
 
 <h1>Hi~</h1>
+
+<!--로그인 출력-->
+<h3> 로그인 </h3>
+<div>
+    <div class="col-md-6">
+        {{#userName}} <!-- userName이 존재한다면-->
+            로그인 유저네임 : <span id="user"> {{userName}} </span>
+            <a href="/logout" class="btn btn-info active" role="button"> 로그아웃</a>
+        {{/userName}}
+        {{^userName}} <!-- userName이 존재하지 않는다면-->
+            <a href="/oauth2/authorization/google" class="btn btn-success active" role="button"> 구글 로그인 </a>
+        {{/userName}}
+
+    </div>
+</div>
+
+
+
 <br>
 
 <div class="form-group">

@@ -1,4 +1,4 @@
-package com.meme.meme_storage.domain.file.service;
+package com.meme.meme_storage.domain.file.entity;
 
 import com.meme.meme_storage.domain.file.entity.MemeFile;
 import com.meme.meme_storage.domain.file.entity.MemeFileTag;
