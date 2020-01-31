@@ -13,6 +13,7 @@
         {{/userName}}
         {{^userName}} <!-- userName이 존재하지 않는다면-->
             <a href="/oauth2/authorization/google" class="btn btn-success active" role="button"> 구글 로그인 </a>
+            <a href="/oauth2/authorization/naver" class="btn btn-success active" role="button"> 네이버 로그인</a> <!-- apllication-oauth.yml으로 연결 되어 redirect-url로 연결 됨-->
         {{/userName}}
 
     </div>
@@ -30,5 +31,7 @@
 <div class="form-group">
 <a href="/files" class="btn btn-primary"> 파일 리스트 보고 다운로드 하기 </a>
 </div>
+
+
 
 {{>layout/footer}}
