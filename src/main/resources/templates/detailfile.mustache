@@ -1,0 +1,47 @@
+{{>layout/header}}
+
+<!-- Page Content -->
+<div class="container">
+{{#memefile}}
+    <!-- Portfolio Item Heading -->
+    <h1 class="my-4">Meme
+        <small>{{id}}</small>
+    </h1>
+
+    <!-- Portfolio Item Row -->
+    <div class="row">
+
+        <div class="col-md-8">
+            <img class="img-fluid" src="/img/{{fileName}}" width="750" height="500" alt="">
+        </div>
+
+        <div class="col-md-4">
+            <h3 class="my-3">Meme Description</h3>
+
+            <p>{{fileName}}</p>
+            <h3 class="my-3">Meme Details</h3>
+            <ul>
+                <li>타입 : {{fileType}}</li>
+                <li>크기 : {{size}}</li>
+                <li>생성 날짜 : {{createdDate}}</li>
+                <li>이미지 경로 : {{filePath}}</li>
+                <li>관련 태그 :
+                    {{#memefileTags}}
+                        <a href="/search?tagName={{tagName}}"> <button>{{tagName}}</button></a>
+                    {{/memefileTags}}
+                </li>
+
+            </ul>
+
+            <form action="/download" method="post">
+                <input class="form-control" type="hidden" name="fileId" value="{{id}}">
+                <input class="form-control" type="submit" value="다운로드">
+            </form>
+
+        </div>
+{{/memefile}}
+    </div>
+    <!-- /.row -->
+
+
+{{>layout/footer}}

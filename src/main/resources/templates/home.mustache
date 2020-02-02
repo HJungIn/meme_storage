@@ -1,37 +1,34 @@
 
 {{>layout/header}}
 
-<h1>Hi~</h1>
 
-<!--로그인 출력-->
-<h3> 로그인 </h3>
-<div>
-    <div class="col-md-6">
-        {{#userName}} <!-- userName이 존재한다면-->
-            로그인 유저네임 : <span id="user"> {{userName}} </span>
-            <a href="/logout" class="btn btn-info active" role="button"> 로그아웃</a>
-        {{/userName}}
-        {{^userName}} <!-- userName이 존재하지 않는다면-->
-            <a href="/oauth2/authorization/google" class="btn btn-success active" role="button"> 구글 로그인 </a>
-            <a href="/oauth2/authorization/naver" class="btn btn-success active" role="button"> 네이버 로그인</a> <!-- apllication-oauth.yml으로 연결 되어 redirect-url로 연결 됨-->
-        {{/userName}}
+<!-- Page Content -->
+<div class="container">
+
+    <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0">MEME Gallery</h1>
+
+    <form action="/search" method="get" >
+        <div class="form-group" id="search_tag">
+            검색할 Tag: <input type="text" name="tagName">
+            <input type="submit" class="btn btn-primary" value="검색"/>
+        </div>
+    </form>
+
+    <hr class="mt-2 mb-5">
+
+    <div class="row text-center text-lg-left">
+
+        {{#files}}
+            <div class="col-lg-3 col-md-4 col-6">
+                <a href="/files/{{id}}" class="d-block mb-4 h-100">
+                    <img class="img-fluid img-thumbnail" src="/img/{{fileName}}" width="400" height="300" alt="">
+                </a>
+            </div>
+        {{/files}}
 
     </div>
+
 </div>
-
-
-
-<br>
-
-<div class="form-group">
-    <a href="/file" class="btn btn-primary"> 파일 업로드해보기 </a>
-</div>
-<br>
-
-<div class="form-group">
-<a href="/files" class="btn btn-primary"> 파일 리스트 보고 다운로드 하기 </a>
-</div>
-
-
+<!-- /.container -->
 
 {{>layout/footer}}

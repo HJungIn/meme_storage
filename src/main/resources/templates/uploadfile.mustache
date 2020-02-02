@@ -1,0 +1,50 @@
+
+{{>layout/header}}
+
+<script type="text/javascript">
+    function add_tag(){
+        var div = document.createElement('div');
+        div.innerHTML = document.getElementById('upload_memefile_tag').innerHTML;
+        document.getElementById('field').appendChild(div);
+    }
+
+    function remove_tag(){
+        var tag = document.getElementById('field');
+        tag.removeChild(tag.childNodes[tag.childElementCount-1]);
+    }
+</script>
+
+<div class="container">
+    <h1 class="my-4">파일 업로드</h1>
+    {{#error}}
+        <h4 id="error">{{.}}</h4>
+    {{/error}}
+
+    <div class="col-md-12">
+        <div class="col-md-4">
+
+            <form action="/upload" method="post" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <input class="form-control" type="file" value="파일 선택" name="file"/>
+<!--                    <input type="button" value="중복확인" >-->
+                </div>
+
+                <h4> Tags</h4>
+                <input type="button" value="추가" onclick="add_tag()">
+                <input type="button" value="삭제" onclick="remove_tag(this)">
+
+                <div class="form-group" id="upload_memefile_tag">
+                    Tag: <input class="form-control" type="text" name="tagName">
+                </div>
+                <div id="field"></div>
+
+                <hr>
+                <input class="btn btn-primary" type="submit" value="업로드"/>
+                <a href="/" role="button" class="btn btn-secondary">취소</a>
+            </form>
+
+        </div>
+    </div>
+</div>
+{{>layout/footer}}

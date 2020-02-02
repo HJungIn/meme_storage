@@ -83,4 +83,21 @@ public class FileService {
     }
 
 
+    public List<Tag> getTagByMemeFile(MemeFile memeFile) {
+
+        List<MemeFileTag> memeFileTags = memeFile.getMemeFileTags();
+        List<Tag> memeFileTagsString = new ArrayList<>();
+        for (MemeFileTag memeFileTag : memeFileTags) {
+            memeFileTagsString.add( memeFileTag.getTag() );
+        }
+        return memeFileTagsString;
+    }
+
+    public boolean nameOverlapCheck(String originalFilename) {
+
+        List<MemeFile> files = memeFileRepository.findByFileName(originalFilename);
+        if(files.size() > 0)
+            return true;
+        return false;
+    }
 }

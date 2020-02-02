@@ -11,5 +11,5 @@ import java.util.List;
 public interface MemeFileRepository extends JpaRepository<MemeFile, Long>{
 
     List<MemeFile> findAll();
-
+    List<MemeFile> findByFileName(String fileName);
 }
