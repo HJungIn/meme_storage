@@ -15,13 +15,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.naming.SizeLimitExceededException;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @Slf4j
@@ -29,8 +29,8 @@ import java.util.Map;
 public class FileController {
 
     private final FileService fileService;
-
-    boolean overlapCheck = false;
+//
+//    boolean memeFileSizeCheck = true;
 
     @RequestMapping("/uploadfile")
     public String fileSelect(Model model, @LoginUser SessionUser user) {
@@ -39,9 +39,9 @@ public class FileController {
             model.addAttribute("user", user);
         }
 
-        if(overlapCheck)
-            model.addAttribute("error", "같은 이름의 파일이 존재합니다.");
-        overlapCheck = false;
+//        if (!memeFileSizeCheck)
+//            model.addAttribute("error", "파일의 크기가 너무 큽니다");
+//        memeFileSizeCheck = true;
         return "uploadfile";
     }
 
@@ -50,30 +50,38 @@ public class FileController {
     public String upload(@RequestParam("file") MultipartFile multipartFile,
                          @RequestParam("tagName") List<String> tagNames, Model model) throws IOException {
 
-        overlapCheck = fileService.nameOverlapCheck(multipartFile.getOriginalFilename());
-        if(overlapCheck){
-            return "redirect:/uploadfile";
-        }
+//            memeFileSizeCheck = fileService.memeFileSizeError(multipartFile.getSize());
+//            if (!memeFileSizeCheck) {
+//
+//            }
 
-        Path targetLocation = fileService.uploadPathSetting(multipartFile);
+            Path targetLocation = fileService.uploadPathSetting(multipartFile);
 
-        MemeFile memeFile = new MemeFile(multipartFile.getOriginalFilename(), multipartFile.getContentType(), targetLocation.toString(), multipartFile.getSize());
-        fileService.saveMemeFile(memeFile);
+            MemeFile memeFile = new MemeFile(multipartFile.getOriginalFilename(), multipartFile.getContentType(), targetLocation.toString(), multipartFile.getSize());
+            fileService.saveMemeFile(memeFile);
 
 
-        for (String tagName : tagNames) {
-            if(tagName.equals("")) continue;
-            Tag tag = new Tag(tagName);
-            fileService.saveTag(tag);
+            for (String tagName : tagNames) {
+                if (tagName.equals("")) continue;
+                Tag tag = new Tag(tagName);
+                fileService.saveTag(tag);
 
-            fileService.saveMemeFileTag(MemeFileTag.createMemeFileTag(memeFile, tag));
-        }
+                fileService.saveMemeFileTag(MemeFileTag.createMemeFileTag(memeFile, tag));
+            }
 
         return "redirect:/";
     }
 
+
+//    @ExceptionHandler(Exception.class) //에러 페이지 하기
+//    public String handleSizeExceededException(Exception e){
+//        System.out.println("maxEx = "+ e.toString());
+//        memeFileSizeCheck = false;
+//        return "redirect:/uploadfile";
+//    }
+
     /**
-     *  files
+     * files
      */
 
     @PostMapping("/download")
@@ -99,6 +107,13 @@ public class FileController {
             model.addAttribute("user", user);
         }
 
+        if(tagName.equals("")){
+            List<MemeFile> files = fileService.findAllFiles();
+            model.addAttribute("files", files);
+
+            return "home";
+        }
+
         List<MemeFile> files = fileService.findMemeFileByTag(tagName);
         model.addAttribute("files", files);
 
@@ -107,7 +122,7 @@ public class FileController {
 
 
     @GetMapping("/files/{id}")
-    public String detailFile(@PathVariable Long id, Model model, @LoginUser SessionUser user){
+    public String detailFile(@PathVariable Long id, Model model, @LoginUser SessionUser user) {
 
         MemeFile memeFile = fileService.getMemeFileById(id);
         model.addAttribute("memefile", memeFile);

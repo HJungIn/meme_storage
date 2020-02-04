@@ -3,10 +3,31 @@
     text-decoration: underline;
 }
 
-#search_tag{
+#align_center{
     text-align: center;
+    margin: auto;
 }
 
 #error{
     color: #c82333;
+}
+
+body{
+    background-color: aliceblue;
+}
+
+.container:not(#header){
+    background-color:white;
+}
+
+.button{
+    font-size: 15px;
+    padding-top: 5px;
+    height: 36px;
+    text-align: center;
+}
+
+.input_text{
+    position: relative;
+    top: 3px;
 }

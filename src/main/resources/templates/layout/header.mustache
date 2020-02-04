@@ -13,22 +13,13 @@
 
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-    <div class="container">
+    <div class="container" id="header">
         <a class="navbar-brand" href="/">Meme Site</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
 
 
-
-
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">Home
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
 
                 <li class="nav-item">
 
@@ -37,23 +28,18 @@
                             <a href="/logout" class="btn btn-info active" role="button"> 로그아웃</a>
                         {{/user}}
                         {{^user}} <!-- user이 존재하지 않는다면-->
-                            <a href="/oauth2/authorization/google" class="btn btn-success active" role="button"> 구글 로그인 </a>
-                            <a href="/oauth2/authorization/naver" class="btn btn-success active" role="button"> 네이버 로그인</a> <!-- apllication-oauth.yml으로 연결 되어 redirect-url로 연결 됨-->
+                            <a href="/oauth2/authorization/google"> <img src="/web_image/google_icon.PNG" height="55"> </a>
+                            <a href="/oauth2/authorization/naver" > <img src="/web_image/naver_icon.PNG" height="49"> </a> <!-- apllication-oauth.yml으로 연결 되어 redirect-url로 연결 됨-->
                         {{/user}}
 
                 </li>
                 <li class="nav-item">
-                &nbsp;
+                &nbsp;&nbsp; &nbsp;
                 </li>
                 <li class="nav-item">
-                    <a href="/uploadfile" class="btn btn-primary"> 파일 업로드 </a>
+                    <a href="/uploadfile" > <img src="/web_image/upload-icon.png" height="50"> </a>
                 </li>
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="#">Services</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="#">Contact</a>-->
-<!--                </li>-->
+
             </ul>
         </div>
     </div>

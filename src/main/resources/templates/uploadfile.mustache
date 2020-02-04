@@ -14,26 +14,31 @@
     }
 </script>
 
-<div class="container">
-    <h1 class="my-4">파일 업로드</h1>
-    {{#error}}
-        <h4 id="error">{{.}}</h4>
-    {{/error}}
+<div class="container" >
+    <h1 class="my-4" id="align_center">파일 업로드</h1>
+    <br>
+    {{!#error}}
+<!--        <h4 id="error" style="text-align: center;">{{!.}}</h4>-->
+    {{!/error}}
 
-    <div class="col-md-12">
-        <div class="col-md-4">
 
-            <form action="/upload" method="post" enctype="multipart/form-data">
 
+    <div class="col-md-12" >
+        <div class="col-md-4" id="align_center">
+
+            <form action="/upload" method="post" enctype="multipart/form-data" accept-charset="UTF-8"  id="align_center">
+
+                <h4> 파일 선택 </h4>
+                <small id="error">파일의 크기는 128MB이하만 가능합니다.</small>
                 <div class="form-group">
                     <input class="form-control" type="file" value="파일 선택" name="file"/>
-<!--                    <input type="button" value="중복확인" >-->
                 </div>
 
                 <h4> Tags</h4>
                 <input type="button" value="추가" onclick="add_tag()">
                 <input type="button" value="삭제" onclick="remove_tag(this)">
 
+                <br>
                 <div class="form-group" id="upload_memefile_tag">
                     Tag: <input class="form-control" type="text" name="tagName">
                 </div>

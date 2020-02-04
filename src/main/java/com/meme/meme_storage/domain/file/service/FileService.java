@@ -93,11 +93,4 @@ public class FileService {
         return memeFileTagsString;
     }
 
-    public boolean nameOverlapCheck(String originalFilename) {
-
-        List<MemeFile> files = memeFileRepository.findByFileName(originalFilename);
-        if(files.size() > 0)
-            return true;
-        return false;
-    }
 }

@@ -6,11 +6,11 @@
 <div class="container">
 
     <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0">MEME Gallery</h1>
-
+    <br>
     <form action="/search" method="get" >
-        <div class="form-group" id="search_tag">
-            검색할 Tag: <input type="text" name="tagName">
-            <input type="submit" class="btn btn-primary" value="검색"/>
+        <div class="form-group" id="align_center">
+            검색할 Tag : <input type="text" name="tagName" class="input_text">
+            <input type="submit" class="button btn btn-primary" value="검색" />
         </div>
     </form>
 
@@ -21,7 +21,7 @@
         {{#files}}
             <div class="col-lg-3 col-md-4 col-6">
                 <a href="/files/{{id}}" class="d-block mb-4 h-100">
-                    <img class="img-fluid img-thumbnail" src="/img/{{fileName}}" width="400" height="300" alt="">
+                    <img class="img-fluid img-thumbnail" src="/img/{{fileName}}"  style="width:400px; height:300px;" alt="">
                 </a>
             </div>
         {{/files}}
