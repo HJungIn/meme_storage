@@ -7,6 +7,10 @@ import com.meme.meme_storage.domain.account.User;
 import com.meme.meme_storage.domain.file.entity.MemeFile;
 import com.meme.meme_storage.domain.file.service.FileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,15 +26,19 @@ public class HomeController {
     private final FileService fileService;
 
     @RequestMapping("/")
-    public String homeAndFileList(Model model, @LoginUser SessionUser user) {
+    public String homeAndFileList(Model model, @LoginUser SessionUser user,
+                                  @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 12) Pageable pageable) {
 
-        List<MemeFile> files = fileService.findAllFiles();
+        Page<MemeFile> files = fileService.findAllFiles(pageable);
         model.addAttribute("files", files);
 
-        if (user != null) {
+        model.addAttribute("pageable", true);
+        model.addAttribute("previous", files.getNumber()-1);
+        model.addAttribute("next", files.getNumber()+1);
+        model.addAttribute("lastpage", files.getTotalPages()-1);
 
+        if (user != null) {
             model.addAttribute("user", user);
-            System.out.println("user.getName() = " + user.getName());
         }
 
         return "home";

@@ -28,6 +28,27 @@
 
     </div>
 
+    {{#pageable}}
+    <div class="row">
+
+        <div class="col-sm-6" id="previous">
+        {{^files.first}}
+            <a href="?page=0" role="button" class="btn btn-secondary"> << </a>
+            <a href="?page={{previous}}" role="button" class="btn btn-secondary">&larr; 이전</a>
+        {{/files.first}}
+        </div>
+
+        <div class="col-sm-6" id="next">
+        {{^files.last}}
+            <a href="?page={{next}}" role="button" class="btn btn-secondary" >다음 &rarr;</a>
+            <a href="?page={{lastpage}}" role="button" class="btn btn-secondary" > >> </a>
+        {{/files.last}}
+        </div>
+
+    </div>
+    {{/pageable}}
+
+    <br>
 </div>
 <!-- /.container -->
 

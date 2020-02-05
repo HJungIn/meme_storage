@@ -31,3 +31,11 @@ body{
     position: relative;
     top: 3px;
 }
+
+#previous{
+    text-align: left;
+}
+
+#next{
+    text-align: right;
+}

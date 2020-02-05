@@ -9,6 +9,8 @@ import com.meme.meme_storage.domain.file.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -103,20 +105,17 @@ public class FileController {
     @GetMapping("/search")
     public String tagSearch(@RequestParam("tagName") String tagName, Model model, @LoginUser SessionUser user) {
 
+        if(tagName.equals("")){
+            return "redirect:/";
+        }
+
         if (user != null) {
             model.addAttribute("user", user);
         }
-
-        if(tagName.equals("")){
-            List<MemeFile> files = fileService.findAllFiles();
-            model.addAttribute("files", files);
-
-            return "home";
-        }
-
         List<MemeFile> files = fileService.findMemeFileByTag(tagName);
         model.addAttribute("files", files);
 
+        model.addAttribute("pageable", false);
         return "home";
     }
 

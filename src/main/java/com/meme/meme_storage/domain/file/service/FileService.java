@@ -4,6 +4,8 @@ import com.meme.meme_storage.domain.file.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,8 +34,8 @@ public class FileService {
         memeFileRepository.save(memeFile);
     }
 
-    public List<MemeFile> findAllFiles() {
-        return memeFileRepository.findAll();
+    public Page<MemeFile> findAllFiles(Pageable pageable) {
+        return memeFileRepository.findAll(pageable);
     }
 
     public MemeFile getMemeFileById(Long id) {
