@@ -11,16 +11,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.naming.SizeLimitExceededException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -103,19 +104,25 @@ public class FileController {
      */
 
     @GetMapping("/search")
-    public String tagSearch(@RequestParam("tagName") String tagName, Model model, @LoginUser SessionUser user) {
+    public String tagSearch(@RequestParam("tagName") String tagNames, Model model, @LoginUser SessionUser user,
+                            HttpServletRequest request,
+                            @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 2) Pageable pageable) {
 
-        if(tagName.equals("")){
+        if(tagNames.equals("")){
             return "redirect:/";
         }
 
         if (user != null) {
             model.addAttribute("user", user);
         }
-        List<MemeFile> files = fileService.findMemeFileByTag(tagName);
+
+        Page<MemeFile> files = fileService.getMemeFileByTags(tagNames, pageable);
         model.addAttribute("files", files);
 
-        model.addAttribute("pageable", false);
+        List<Integer> pages = fileService.getListPages(files.getTotalPages());
+        model.addAttribute("pages", pages);
+        model.addAttribute("searchCheck", true);
+
         return "home";
     }
 

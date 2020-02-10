@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,17 +26,17 @@ public class HomeController {
 
     private final FileService fileService;
 
-    @RequestMapping("/")
+    @RequestMapping(value = {"/", "/gallery"})
     public String homeAndFileList(Model model, @LoginUser SessionUser user,
                                   @PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 12) Pageable pageable) {
 
         Page<MemeFile> files = fileService.findAllFiles(pageable);
         model.addAttribute("files", files);
 
-        model.addAttribute("pageable", true);
-        model.addAttribute("previous", files.getNumber()-1);
-        model.addAttribute("next", files.getNumber()+1);
-        model.addAttribute("lastpage", files.getTotalPages()-1);
+        List<Integer> pages = fileService.getListPages(files.getTotalPages());
+        model.addAttribute("pages", pages);
+
+        model.addAttribute("searchCheck", false);
 
         if (user != null) {
             model.addAttribute("user", user);
@@ -43,7 +44,6 @@ public class HomeController {
 
         return "home";
     }
-
 
 
 }

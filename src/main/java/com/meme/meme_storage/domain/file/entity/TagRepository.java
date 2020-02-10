@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
-    @Query("select t from Tag t where :tagName like t.tagName")
-    List<Tag> findByTagName(@Param("tagName") String tagName);
+    @Query("select t from Tag t where t.tagName in :tagName")
+    List<Tag> findByTagNames(@Param("tagName") String[] tagNames);
 }

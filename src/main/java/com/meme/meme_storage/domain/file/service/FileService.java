@@ -70,17 +70,17 @@ public class FileService {
         memeFileTagRepository.save(memeFileTag);
     }
 
-    public List<MemeFile> findMemeFileByTag(String tagName) {
-        List<Tag> tags = tagRepository.findByTagName(tagName);
+    public Page<MemeFile> getMemeFileByTags(String tagNameStr, Pageable pageable) {
+
+        String[] tagNames = tagNameStr.split(" ");
+        List<Tag> tags = tagRepository.findByTagNames(tagNames);
 
         if (tags.size() == 0) {
-            List<MemeFile> emptyFiles = new ArrayList<>();
-            return emptyFiles;
+            return Page.empty();
         }
 
-        List<MemeFile> memeFiles = memeFileTagRepository.findByTag(tags);
 
-
+        Page<MemeFile> memeFiles = memeFileTagRepository.findByTag(tags, pageable);
         return memeFiles;
     }
 
@@ -93,6 +93,14 @@ public class FileService {
             memeFileTagsString.add( memeFileTag.getTag() );
         }
         return memeFileTagsString;
+    }
+
+    public List<Integer> getListPages(int totalPages) {
+        List<Integer> pages = new ArrayList<>();
+        for(int i=0;i<totalPages;i++){
+            pages.add(i+1);
+        }
+        return pages;
     }
 
 }

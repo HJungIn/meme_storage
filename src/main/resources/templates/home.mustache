@@ -1,6 +1,18 @@
 
 {{>layout/header}}
+<script type="text/javascript">
+    function page(index, searchCheck){
+        if (!searchCheck)
+            window.location.href= "/gallery?page=" + (index-1);
+        else
+            window.location.href= window.location.pathname+ searchUri( window.location.search ) +"&page=" + (index-1);
+    }
 
+    function searchUri(uri) {
+        return uri.split("&")[0];
+    }
+
+</script>
 
 <!-- Page Content -->
 <div class="container">
@@ -28,25 +40,14 @@
 
     </div>
 
-    {{#pageable}}
+
     <div class="row">
-
-        <div class="col-sm-6" id="previous">
-        {{^files.first}}
-            <a href="?page=0" role="button" class="btn btn-secondary"> << </a>
-            <a href="?page={{previous}}" role="button" class="btn btn-secondary">&larr; 이전</a>
-        {{/files.first}}
+        <div class="col-sm-6" id="align_center">
+            {{#pages}}
+                <a href="javascript:page({{.}} , {{searchCheck}})" > {{.}} </a>
+            {{/pages}}
         </div>
-
-        <div class="col-sm-6" id="next">
-        {{^files.last}}
-            <a href="?page={{next}}" role="button" class="btn btn-secondary" >다음 &rarr;</a>
-            <a href="?page={{lastpage}}" role="button" class="btn btn-secondary" > >> </a>
-        {{/files.last}}
-        </div>
-
     </div>
-    {{/pageable}}
 
     <br>
 </div>
