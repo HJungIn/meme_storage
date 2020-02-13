@@ -23,7 +23,7 @@ public class MemeFile extends BaseTimeEntity {
     private String filePath;
     private long size;
 
-    @OneToMany(mappedBy = "memefile")
+    @OneToMany(mappedBy = "memefile", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<MemeFileTag> memeFileTags = new ArrayList<>();
 
     public MemeFile(){

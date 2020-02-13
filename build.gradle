@@ -49,6 +49,8 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-oauth2-client')
 	compile group: 'org.springframework.session', name: 'spring-session-jdbc'
 
+	compile group: 'com.sangupta', name: 'murmur', version: '1.0.0'
+
 }
 
 test {

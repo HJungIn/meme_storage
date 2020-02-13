@@ -3,9 +3,10 @@ package com.meme.meme_storage.controller;
 import com.meme.meme_storage.config.oauth.LoginUser;
 import com.meme.meme_storage.config.oauth.dto.SessionUser;
 import com.meme.meme_storage.domain.file.entity.MemeFile;
-import com.meme.meme_storage.domain.file.entity.MemeFileTag;
 import com.meme.meme_storage.domain.file.entity.Tag;
 import com.meme.meme_storage.domain.file.service.FileService;
+import com.meme.meme_storage.domain.file.service.UserService;
+import com.sangupta.murmur.Murmur3;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -32,56 +33,41 @@ import java.util.List;
 public class FileController {
 
     private final FileService fileService;
-//
-//    boolean memeFileSizeCheck = true;
 
     @RequestMapping("/uploadfile")
     public String fileSelect(Model model, @LoginUser SessionUser user) {
 
         if (user != null) {
             model.addAttribute("user", user);
+            model.addAttribute("userRole",userService.getUserRole(user.getEmail()).equals("ROLE_ADMIN"));
         }
 
-//        if (!memeFileSizeCheck)
-//            model.addAttribute("error", "파일의 크기가 너무 큽니다");
-//        memeFileSizeCheck = true;
         return "uploadfile";
     }
 
-
+    private static final long SEED = 0x7f3a21eal;
     @PostMapping("/upload")
     public String upload(@RequestParam("file") MultipartFile multipartFile,
-                         @RequestParam("tagName") List<String> tagNames, Model model) throws IOException {
+                         @RequestParam("tagName") String tagNameStr, Model model) throws IOException {
 
-//            memeFileSizeCheck = fileService.memeFileSizeError(multipartFile.getSize());
-//            if (!memeFileSizeCheck) {
-//
-//            }
 
-            Path targetLocation = fileService.uploadPathSetting(multipartFile);
+        long hashFilename = Murmur3.hash_x86_32(multipartFile.getOriginalFilename().getBytes(), multipartFile.getOriginalFilename().length(), SEED);
+        String hashFilenameStr = String.valueOf(hashFilename);
 
-            MemeFile memeFile = new MemeFile(multipartFile.getOriginalFilename(), multipartFile.getContentType(), targetLocation.toString(), multipartFile.getSize());
+        String[] pointSplit = multipartFile.getOriginalFilename().split("\\.");
+        String typeName = pointSplit[pointSplit.length-1];
+        String hashFilenameAndTypename = hashFilenameStr + "." + typeName;
+
+        Path targetLocation = fileService.uploadPathSetting(multipartFile, hashFilenameAndTypename);
+
+        MemeFile memeFile = new MemeFile(hashFilenameAndTypename, multipartFile.getContentType(), targetLocation.toString(), multipartFile.getSize());
             fileService.saveMemeFile(memeFile);
 
 
-            for (String tagName : tagNames) {
-                if (tagName.equals("")) continue;
-                Tag tag = new Tag(tagName);
-                fileService.saveTag(tag);
-
-                fileService.saveMemeFileTag(MemeFileTag.createMemeFileTag(memeFile, tag));
-            }
+            fileService.saveTagAndMemeFileTagByTagName(tagNameStr, memeFile, false);
 
         return "redirect:/";
     }
-
-
-//    @ExceptionHandler(Exception.class) //에러 페이지 하기
-//    public String handleSizeExceededException(Exception e){
-//        System.out.println("maxEx = "+ e.toString());
-//        memeFileSizeCheck = false;
-//        return "redirect:/uploadfile";
-//    }
 
     /**
      * files
@@ -102,6 +88,7 @@ public class FileController {
     /**
      * 검색
      */
+    private final UserService userService;
 
     @GetMapping("/search")
     public String tagSearch(@RequestParam("tagName") String tagNames, Model model, @LoginUser SessionUser user,
@@ -114,12 +101,18 @@ public class FileController {
 
         if (user != null) {
             model.addAttribute("user", user);
+            model.addAttribute("userRole",userService.getUserRole(user.getEmail()).equals("ROLE_ADMIN"));
         }
 
         Page<MemeFile> files = fileService.getMemeFileByTags(tagNames, pageable);
         model.addAttribute("files", files);
+        model.addAttribute("currentPage", files.getNumber());
+        model.addAttribute("lastPage", files.getTotalPages());
 
-        List<Integer> pages = fileService.getListPages(files.getTotalPages());
+        int tenCheckPage = 1;
+        tenCheckPage += files.getNumber()/10;
+
+        List<Integer> pages = fileService.getListPages(tenCheckPage, files.getTotalPages());
         model.addAttribute("pages", pages);
         model.addAttribute("searchCheck", true);
 
@@ -128,7 +121,7 @@ public class FileController {
 
 
     @GetMapping("/files/{id}")
-    public String detailFile(@PathVariable Long id, Model model, @LoginUser SessionUser user) {
+    public String detailFile(@PathVariable Long id, Model model, @LoginUser SessionUser user) throws Exception{
 
         MemeFile memeFile = fileService.getMemeFileById(id);
         model.addAttribute("memefile", memeFile);
@@ -139,8 +132,21 @@ public class FileController {
 
         if (user != null) {
             model.addAttribute("user", user);
+            model.addAttribute("userRole",userService.getUserRole(user.getEmail()).equals("ROLE_ADMIN"));
         }
 
         return "detailfile";
     }
+
+    @PostMapping("/detailFileAddTag")
+    public String detailFileAddTag(@RequestParam("memefileId") Long id, @RequestParam("tagName") String tagNameStr){
+
+        MemeFile memeFile = fileService.getMemeFileById(id);
+
+        fileService.saveTagAndMemeFileTagByTagName(tagNameStr, memeFile, true);
+
+        return "redirect:/files/"+id;
+    }
+
+
 }

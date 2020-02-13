@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <!--    <link href="./static/css/bootstrap.min.css" rel="stylesheet">-->
     <link rel="stylesheet" href="/css/Main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 
@@ -15,6 +16,11 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
     <div class="container" id="header">
         <a class="navbar-brand" href="/">Meme Site</a>
+
+        {{#userRole}}
+                <a class="nav-link" href="/">ADMIN</a>
+        {{/userRole}}
+
 
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
@@ -28,8 +34,10 @@
                             <a href="/logout" class="btn btn-info active" role="button"> 로그아웃</a>
                         {{/user}}
                         {{^user}} <!-- user이 존재하지 않는다면-->
-                            <a href="/oauth2/authorization/google"> <img src="/web_image/google_icon.PNG" height="55"> </a>
-                            <a href="/oauth2/authorization/naver" > <img src="/web_image/naver_icon.PNG" height="49"> </a> <!-- apllication-oauth.yml으로 연결 되어 redirect-url로 연결 됨-->
+                            <a href="/loginPage"> <i class="fa fa-user fa-3x" style="margin-top: -5px"></i> </a> &nbsp;
+
+<!--                            <a href="/oauth2/authorization/google"> <img src="/web_image/google_icon.PNG" height="55"> </a>-->
+<!--                            <a href="/oauth2/authorization/naver" > <img src="/web_image/naver_icon.PNG" height="49"> </a> &lt;!&ndash; apllication-oauth.yml으로 연결 되어 redirect-url로 연결 됨&ndash;&gt;-->
                         {{/user}}
 
                 </li>

@@ -4,6 +4,7 @@
 }
 
 #align_center{
+    font-family: Impact;
     text-align: center;
     margin: auto;
 }
@@ -38,4 +39,28 @@ body{
 
 #next{
     text-align: right;
+}
+
+.cropping{
+    overflow: hidden;
+    position: relative;
+
+}
+.cropping img {
+    object-fit: cover;
+    object-position: bottom;
+}
+
+.container-box{
+    border-style: double;
+    border-color: aquamarine;
+}
+
+.container-box h1 {
+    border-bottom-style: dashed;
+    border-bottom-color: lightcyan;
+}
+
+.container-login{
+    width: 400px;
 }

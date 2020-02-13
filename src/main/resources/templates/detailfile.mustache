@@ -1,18 +1,25 @@
 {{>layout/header}}
 
+
+
 <!-- Page Content -->
 <div class="container">
 {{#memefile}}
     <!-- Portfolio Item Heading -->
     <h1 class="my-4">Meme
         <small>{{id}}</small>
+        {{#userRole}}
+            <a href="/admin/removeMemeFile/{{id}}"> <input type="button" class="button btn" style="background-color: #c82333" value="삭제"/> </a>
+        {{/userRole}}
     </h1>
+
 
     <!-- Portfolio Item Row -->
     <div class="row">
 
         <div class="col-md-8">
-            <img class="img-fluid" src="/img/{{fileName}}" width="750" height="500" alt="">
+            <img class="img-fluid" src="/img/{{fileName}}" id="encryptionImage" width="750" height="500" alt="">
+<!--            <img class="img-fluid" src="data:{{!fileType}};charset=utf-8;base64, {{!memefileNameEncryption}}" id="encryptionImage" width="750" height="500" alt="">-->
         </div>
 
         <div class="col-md-4">
@@ -21,6 +28,7 @@
             <p>{{fileName}}</p>
             <h3 class="my-3">Meme Details</h3>
             <ul>
+                <li>{{!memefileNameEncryption}}</li>
                 <li>타입 : {{fileType}}</li>
                 <li>크기 : {{size}}</li>
                 <li>생성 날짜 : {{createdDate}}</li>
@@ -28,7 +36,22 @@
                 <li>관련 태그 :
                     {{#memefileTags}}
                         <a href="/search?tagName={{tagName}}"> <button>{{tagName}}</button></a>
+                        {{#userRole}}
+                            <a href="/removeMemeFileTag/{{memefile.id}}/{{id}}"> <i class="fa fa-minus-circle" style="color: #c82333"></i> </a>
+                            &nbsp; &nbsp;
+                        {{/userRole}}
                     {{/memefileTags}}
+
+                    {{#user}}
+                        <div>
+                            <form action="/detailFileAddTag" method="post" accept-charset="UTF-8" >
+                                <input type="hidden" name="memefileId" value="{{id}}">
+                                <input type="text" name="tagName" placeholder="태그를 , 를 통해 추가해주세요">
+                                <input class="btn btn-primary" type="submit" value="추가하기"/>
+                            </form>
+                        </div>
+                    {{/user}}
+
                 </li>
 
             </ul>

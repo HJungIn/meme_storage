@@ -19,7 +19,7 @@ public class Tag {
 
     private String tagName;
 
-    @OneToMany(mappedBy = "tag")
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<MemeFileTag> memeFileTags = new ArrayList<>();
 
     public Tag(String tagName) {

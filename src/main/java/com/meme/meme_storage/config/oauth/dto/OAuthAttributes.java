@@ -56,6 +56,16 @@ public class OAuthAttributes {
     }
 
     public User toEntity() {
+
+        if(email.equals("gjwjddls96@naver.com")){
+            return User.builder()
+                    .name(name)
+                    .email(email)
+                    .picture(picture)
+                    .role(Role.ADMIN)
+                    .build();
+        }
+
         return User.builder()
                 .name(name)
                 .email(email)
