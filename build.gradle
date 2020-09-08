@@ -1,8 +1,20 @@
-plugins {
-	id 'org.springframework.boot' version '2.2.2.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
-	id 'java'
+buildscript {
+	ext {
+		springBootVersion = '2.1.7.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+		jcenter()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
 }
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
 group = 'com.meme'
 version = '0.0.1-SNAPSHOT'
@@ -27,7 +39,18 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
+	}	
+	
+	
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6'
+	
+	implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.0.0.RELEASE'
+	compile('org.springframework.boot:spring-boot-starter-oauth2-client')
+	compile group: 'org.springframework.session', name: 'spring-session-jdbc'
+
+	compile group: 'com.sangupta', name: 'murmur', version: '1.0.0'
+
 }
 
 test {

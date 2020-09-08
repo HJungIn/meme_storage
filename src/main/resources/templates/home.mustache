@@ -1,0 +1,87 @@
+
+{{>layout/header}}
+<script type="text/javascript">
+    function page(index, searchCheck){
+        if (!searchCheck)
+            window.location.href= "/gallery?page=" + (index-1);
+        else
+            window.location.href= window.location.pathname+ searchUri( window.location.search ) +"&page=" + (index-1);
+    }
+
+    function searchUri(uri) {
+        return uri.split("&")[0];
+    }
+
+    function nextPage(index, searchCheck){
+        if (!searchCheck)
+            window.location.href= "/gallery?page=" + (index+1);
+        else
+            window.location.href= window.location.pathname+ searchUri( window.location.search ) +"&page=" + (index+1);
+    }
+
+
+</script>
+
+<!-- Page Content -->
+<div class="container">
+
+    <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0">MEME Gallery</h1>
+    <br>
+    <form action="/search" method="get" >
+        <div class="form-group" id="align_center">
+            검색할 Tag : <input type="text" name="tagName" class="input_text">
+            <input type="submit" class="button btn btn-primary" value="검색" />
+        </div>
+    </form>
+
+    <hr class="mt-2 mb-5">
+
+    <div class="row text-center text-lg-left">
+
+        {{#files}}
+            <div class="col-lg-3 col-md-4 col-6 cropping">
+                {{#userRole}}
+                <a href="/admin/removeMemeFile/{{id}}"> <input type="button" class="button btn" style="background-color: #c82333;text-decoration-color: aliceblue" value="삭제"/> </a>
+                {{/userRole}}
+
+                <a href="/files/{{id}}" class="d-block mb-4 h-100">
+                    <img class="img-fluid img-thumbnail" src="/img/{{fileName}}"  style="width:400px; height:300px;" alt="">
+                </a>
+
+
+            </div>
+        {{/files}}
+
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-sm-4" id="previous">
+            {{^files.first}}
+                <a href="javascript:page(1 , {{searchCheck}})" role="button" class="btn btn-secondary"> << </a>
+                <a href="javascript:page({{currentPage}} , {{searchCheck}})" role="button" class="btn btn-secondary">&larr; 이전</a>
+            {{/files.first}}
+        </div>
+
+        <div class="col-sm-4" id="align_center">
+
+            {{#pages}}
+                <a href="javascript:page({{.}} , {{searchCheck}})" > {{.}} </a>
+            {{/pages}}
+        </div>
+
+        <div class="col-sm-4" id="next">
+            {{^files.last}}
+                <a href="javascript:nextPage({{currentPage}} , {{searchCheck}})" role="button" class="btn btn-secondary" >다음 &rarr;</a>
+                <a href="javascript:page({{lastPage}} , {{searchCheck}})" role="button" class="btn btn-secondary" > >> </a>
+            {{/files.last}}
+        </div>
+
+    </div>
+
+    <br>
+</div>
+<!-- /.container -->
+
+{{>layout/footer}}

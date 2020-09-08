@@ -1,0 +1,46 @@
+
+{{>layout/header}}
+
+<br>
+<div class="container container-box" >
+    <h1 class="my-4" id="align_center"><pre>이미지 업로드<br></pre></h1>
+    <br>
+
+
+
+    <div class="col-md-12" >
+
+        <form action="/upload" method="post" enctype="multipart/form-data" accept-charset="UTF-8"  id="align_center">
+
+                <div class="row">
+                <div class="col-md-6" id="align_center">
+                    <h4> 이미지 선택 </h4>
+                    <small id="error">파일의 크기는 128MB이하만 가능합니다.</small>
+                    <div class="form-group">
+                        <input class="form-control" type="file" value="파일 선택" name="file"/>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <h4> Tags</h4>
+                    <br>
+                    <div class="form-group" id="upload_memefile_tag">
+                        <input class="form-control" type="text" name="tagName">
+                    </div>
+                </div>
+                </div>
+
+            <br>
+            <hr>
+<!--            <br>-->
+
+                <input class="btn btn-primary" type="submit" value="업로드"/> &nbsp; &nbsp;
+                <a href="/" role="button" class="btn btn-secondary">취소</a>
+
+        </form>
+    </div>
+
+    <br>
+</div>
+
+{{>layout/footer}}

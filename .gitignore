@@ -35,3 +35,4 @@ out/
 src/main/resources/application-dev.yml
 src/main/resources/application-local.yml
 src/main/resources/application-prd.yml
+src/main/resources/application-oauth.yml
